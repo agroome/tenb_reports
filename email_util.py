@@ -64,29 +64,29 @@ class Mailer:
         return emails
             
 
-def email_cspm(report_path, distribution):
-    print(f'reporting from dir: {report_path.absolute()}')
-    for file_path in report_path.iterdir():
-        project_name = file_path.stem
-        print(f"**** {project_name} ***")
-        print(f"    {file_path.absolute()}")
-        try:
-            addresses = ','.join(distribution[project_name])
-        except KeyError as e:
-            raise ValueError(f'email distribuiton not found for project: {project_name}')
+# def email_cspm(report_path, distribution):
+#     print(f'reporting from dir: {report_path.absolute()}')
+#     for file_path in report_path.iterdir():
+#         project_name = file_path.stem
+#         print(f"**** {project_name} ***")
+#         print(f"    {file_path.absolute()}")
+#         try:
+#             addresses = ','.join(distribution[project_name])
+#         except KeyError as e:
+#             raise ValueError(f'email distribuiton not found for project: {project_name}')
 
-        # print(f"To: {addresses}")
-
-
-def run_test():
-    report_path = Config.report_folder / Config.cspm_reports 
-    distribution = read_config(yaml_config)
-
-    mailer = Mailer(report_path, distribution)
-    for email in mailer.emails:
-        pprint(email)
+#         # print(f"To: {addresses}")
 
 
-if __name__ == '__main__':
-    run_test()
+# def run_test():
+#     report_path = Config.report_folder / Config.cspm_reports 
+#     distribution = read_config(yaml_config)
+
+#     mailer = Mailer(report_path, distribution)
+#     for email in mailer.emails:
+#         pprint(email)
+
+
+# if __name__ == '__main__':
+#     run_test()
 
