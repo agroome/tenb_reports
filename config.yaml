@@ -1,0 +1,131 @@
+AWS CSPM:
+- person_19@example.com
+- person_4@example.com
+- person_21@example.com
+AWS DevOps:
+- person_27@example.com
+- person_20@example.com
+- person_14@example.com
+- person_1@example.com
+AWS Pipeline:
+- person_0@example.com
+- person_4@example.com
+- person_20@example.com
+All Azure CSPM:
+- person_4@example.com
+- person_19@example.com
+- person_25@example.com
+Azure ADO Pipeline:
+- person_17@example.com
+- person_14@example.com
+- person_18@example.com
+- person_3@example.com
+Azure ADO Repo:
+- person_19@example.com
+- person_21@example.com
+- person_11@example.com
+- person_28@example.com
+Azure CLI:
+- person_11@example.com
+- person_18@example.com
+- person_0@example.com
+- person_10@example.com
+Azure CSPM:
+- person_20@example.com
+- person_8@example.com
+- person_10@example.com
+- person_0@example.com
+Azure DevOps Team:
+- person_4@example.com
+- person_24@example.com
+- person_25@example.com
+- person_20@example.com
+Azure GitHub Actions Pipeline:
+- person_15@example.com
+- person_10@example.com
+- person_5@example.com
+- person_3@example.com
+Azure Test:
+- person_28@example.com
+- person_28@example.com
+- person_1@example.com
+- person_9@example.com
+BB Demo:
+- person_20@example.com
+- person_0@example.com
+- person_8@example.com
+- person_9@example.com
+Clear and Present Dangers:
+- person_15@example.com
+- person_7@example.com
+- person_21@example.com
+Default_TF_Cloud_Project:
+- person_26@example.com
+- person_15@example.com
+- person_0@example.com
+- person_27@example.com
+Exceptions Demo:
+- person_2@example.com
+- person_3@example.com
+- person_25@example.com
+- person_22@example.com
+GCP Cloud VM:
+- person_4@example.com
+- person_18@example.com
+- person_22@example.com
+Google Kubernetes Engine:
+- person_6@example.com
+- person_24@example.com
+- person_21@example.com
+- person_6@example.com
+K8s YAML:
+- person_11@example.com
+- person_2@example.com
+- person_1@example.com
+- person_12@example.com
+K8s-test:
+- person_24@example.com
+- person_15@example.com
+- person_21@example.com
+- person_9@example.com
+KaiMonkey (ARM):
+- person_11@example.com
+- person_13@example.com
+- person_25@example.com
+KaiMonkey (CFT):
+- person_12@example.com
+- person_21@example.com
+- person_7@example.com
+- person_15@example.com
+KaiMonkey Pipeline (CFT):
+- person_16@example.com
+- person_9@example.com
+- person_2@example.com
+Local Kubernetes:
+- person_8@example.com
+- person_7@example.com
+- person_0@example.com
+- person_7@example.com
+Pipeline:
+- person_24@example.com
+- person_2@example.com
+- person_24@example.com
+Shift Left Demo Cloud2:
+- person_10@example.com
+- person_7@example.com
+- person_29@example.com
+- person_5@example.com
+Shift-Left-Demo (Cloud):
+- person_15@example.com
+- person_4@example.com
+- person_3@example.com
+- person_25@example.com
+Shift-Left-Demo (Pipeline):
+- person_5@example.com
+- person_21@example.com
+- person_0@example.com
+- person_24@example.com
+Shift-Left-Demo (Version Control):
+- person_11@example.com
+- person_15@example.com
+- person_11@example.com

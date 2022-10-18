@@ -1,0 +1,4 @@
+click
+pandas
+python-dotenv
+pytenable
