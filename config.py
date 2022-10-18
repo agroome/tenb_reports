@@ -4,10 +4,8 @@ import pathlib
 
 dotenv.load_dotenv()
 
-ROOT_DIR = pathlib.Path('.')
-
 class Config:
-    root_dir = ROOT_DIR
+    root_dir = pathlib.Path('.')
     report_folder = pathlib.Path(os.getenv('REPORT_FOLDER', ''))
     cspm_reports = 'cspm'
 

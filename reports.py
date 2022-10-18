@@ -1,13 +1,12 @@
 import yaml
 from pprint import pprint
+import os
 import pathlib
 import time
 import consec
 import cspm
 import v2export
 from smtp_email import SMTPMailer
-# from dotenv import load_dotenv
-# load_dotenv()
 
 app_dir = pathlib.Path('.')
 
@@ -15,12 +14,12 @@ app_dir = pathlib.Path('.')
 time_fmt = '%Y:%m:%d-%H:%M:%S'
 
 
-def download(config_path):
-    with open(config_path) as f:
-        report_definitions = yaml.safe_load(f)['REPORTS']
-
-    for report in report_definitions: 
-        report_folder = app_dir / 'reports' / report['name']
+def download(report_directives, output_folder):
+    # with open(config_path) as f:
+    #     report_definitions = yaml.safe_load(f)['REPORTS']
+    print(f'output: {output_folder}')
+    for report in report_directives['REPORTS']: 
+        report_folder =  output_folder / report['name']
         report_folder.mkdir(parents=True, exist_ok=True, mode=0o755)
 
         report['attachments'] = []
@@ -47,7 +46,7 @@ def download(config_path):
             for file_path in target_folder.glob('*.csv'):
                 report['attachments'].append(file_path.absolute())
             
-        return report_definitions
+        return report_directives['REPORTS']
 
 
 def email(report_definitions):
