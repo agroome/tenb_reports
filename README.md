@@ -20,5 +20,27 @@ $ python3 -m venv ./venv
 $ source activate ./venv/bin/activate
 ```
 
+Using your own API keys and TCS bearer token, create a file in the project directory called .env with the following format:
+
+```
+TIO_ACCESS_KEY=d00f0d...
+TIO_SECRET_KEY=30061b...
+TCS_API_TOKEN=8474bb6...
+SMTP_SERVER=localhost
+SMTP_PORT=1025
+```
+
+
+
 ## Usage
+
+```
 (venv)$ python cli.py --help
+(venv)$ python cli.py [CMD] --help
+```
+
+Sample configuration for run-reports command located in report_config.yaml file.
+
+
+
+... more to come

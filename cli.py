@@ -6,8 +6,6 @@ import yaml
 
 import web_app 
 import vmscan
-import email_util
-import smtp_email
 import reports
 
 from config import Config 
