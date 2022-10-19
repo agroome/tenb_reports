@@ -1,11 +1,12 @@
 import yaml
 from pprint import pprint
 import os
+import logging
 import pathlib
 import time
 import consec
 import cspm
-import v2export
+import tio_exports
 from smtp_email import SMTPMailer
 
 app_dir = pathlib.Path('.')
@@ -15,8 +16,6 @@ time_fmt = '%Y:%m:%d-%H:%M:%S'
 
 
 def download(report_directives, output_folder):
-    # with open(config_path) as f:
-    #     report_definitions = yaml.safe_load(f)['REPORTS']
     print(f'output: {output_folder}')
     for report in report_directives['REPORTS']: 
         report_folder =  output_folder / report['name']
@@ -27,11 +26,14 @@ def download(report_directives, output_folder):
         if 'tio_tags' in report:
             # convert list of single item dicts to a list of tuple
             tag_filter = [next(iter(tag.items())) for tag in report['tio_tags']]
-            folder_path = report_folder 
-            folder_path.mkdir(parents=True, exist_ok=True, mode=0o755)
-            file_path = folder_path / 'vulns.csv' 
-            print(f'exporting vulns to {file_path.absolute()}')
-            v2export.export_vulns(file_path, tags=tag_filter)
+            print(f'exporting vulns to {report_folder.absolute()}')
+            file_path = report_folder / 'vulns.csv'
+            tio_exports.export_vulns(file_path, tags=tag_filter)
+            report['attachments'].append(file_path.absolute())
+
+            print(f'exporting compliance to {report_folder.absolute()}')
+            compliance_file = report_folder / 'compliance.csv'
+            tio_exports.export_compliance(file_path, tags=tag_filter)
             report['attachments'].append(file_path.absolute())
 
         if 'repositories' in report:

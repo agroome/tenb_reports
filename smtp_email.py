@@ -14,9 +14,9 @@ class SMTPMailer:
         self.password = password
         self.attachment_paths = []
 
-    def attach_file(self, filename):
-        """"""
-        self.attachment_paths.append(filename)
+    # def attach_file(self, filename):
+    #     """"""
+    #     self.attachment_paths.append(filename)
 
     def send_email(self, sender, recipients, subject, body, attachments=None):
         # Create a multipart message and set headers
@@ -66,7 +66,7 @@ def main():
     # password = input("Type your password and press enter:")
 
     smtp = SMTPMailer(debug_server, port=1025, use_ssl=False)
-    smtp.attach_file('test.csv')
+    attachments = ['test.csv']
     smtp.send_email(sender_email, receiver_email, subject, body)
 
 if __name__ == '__main__':

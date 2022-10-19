@@ -56,11 +56,12 @@ def run_reports(target_folder):
     response = requests.get(images_url, headers=headers)
     images = json.loads(response.text)['items']
     for image in images:
-        file_path = target_folder / image_report_filepath(image)
+        file_path = os.path.join(target_folder, image_report_filepath(image))
         logging.info('writing to file %s', file_path)
 
         df = pd.DataFrame.from_records(parse_report(image), index='cve')
         df[report_columns].to_csv(file_path)
 
 if __name__ == '__main__':
-    run_reports()
+    run_reports('./reports/consec')
+

@@ -3,6 +3,29 @@
 ## Overview
 Example use of various APIs to export and download information from Tenable.io, Tenable.cs and Tenable.was.
 
+
+Generate reports based on yaml configuration command located in report_config.yaml file.
+'''
+REPORTS:
+    name: new_report {date}
+-   date_fmt: '%Y:%m:%d-%H:%M%S'
+
+    from: sender@example.com
+    subject: my report subject
+    to: 
+    - person_19@example.com 
+    - person_4@example.com 
+    - person_21@example.com
+    body: 'this is a short body'
+
+    tio_tags: 
+    - Business Unit: Sales
+    
+    cspm_projects:
+    - AWS CSPM
+    - AWS Pipeline
+'''
+
 This offered under a MIT license and is not officially supported or provided by Tenable.
 
 ## Installation
@@ -25,7 +48,7 @@ Using your own API keys and TCS bearer token, create a file in the project direc
 ```
 TIO_ACCESS_KEY=d00f0d...
 TIO_SECRET_KEY=30061b...
-TCS_API_TOKEN=8474bb6...
+TCS_BEARER_TOKEN=8474bb6...
 SMTP_SERVER=localhost
 SMTP_PORT=1025
 ```
@@ -39,8 +62,20 @@ SMTP_PORT=1025
 (venv)$ python cli.py [CMD] --help
 ```
 
-Sample configuration for run-reports command located in report_config.yaml file.
 
+## Testing email with a debuging smtp server
+You can test email functionality by settup up a debuging server that runs on localhost:1025.
 
+Start the email server in a terminal window with the following command. 
 
+```
+python3 -m smtpd -c DebuggingServer -n localhost:1025
+```
+
+Initialize the mailer with the following parameters when sending to the local server:
+```
+SMTP_SERVER=localhost
+SMTP_PORT=1025
+SMTP_USE_SSL=false
+```
 ... more to come

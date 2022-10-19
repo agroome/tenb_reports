@@ -4,10 +4,10 @@ import os #For environment
 import requests #for API interaction
 import json #API returns JSON, usually
 
-bearer = os.getenv('TCS_API_TOKEN')
+bearer = os.getenv('TCS_BEARER_TOKEN', '')
 headers = {
     "accept": "application/json",
-    "authorization": "Bearer " + bearer
+    "authorization": f"Bearer {bearer}"
 }
 offset = 0 #Record offset for API
 limit = 1000 #Record limit for API
