@@ -1,67 +1,63 @@
-import os #For environment
-import requests #for API interaction
-import json #API returns JSON, usually
 import pandas as pd
-from config import Config
-
+import pathlib
+from tenable.io import TenableIO 
 import logging
-logging.basicConfig(filename='example.log', encoding='utf-8', level=logging.INFO)
-
-accessKey = os.getenv('TIO_ACCESS_KEY')
-secretKey = os.getenv('TIO_SECRET_KEY')
-
-base_url = "https://cloud.tenable.com/container-security/api/v2"
-
-headers = {
-    "accept": "application/json",
-    "X-ApiKeys": "accessKey=" + accessKey + ";secretKey=" + secretKey
-}
-
-def parse_report(item):
-    repo_name = item.get('repoName')
-    name = item.get('name')
-    tag = item.get('tag')
-    image_name = f'{repo_name}/{name}:{tag}'
-    report_url = f"{base_url}/reports/{item.get('repoName')}/{item.get('name')}/{item.get('tag')}"
-    responses= requests.get(report_url, headers=headers)
-    response = json.loads(responses.text)
-    for finding in response['findings']:
-        record = finding['nvdFinding']
-        package = finding['packages'][0]
-        record['repo'] = repo_name
-        record['image'] = image_name
-        record['docker_image_id'] = response['docker_image_id']
-        record['created_at'] = response['created_at']
-        record['updated_at'] = response['updated_at']
-        record['package_name'] = package['name']
-        record['package_version'] = package['version']
-        record['package_type'] = package['type']
-        yield record
 
 
-report_columns = [
-    'repo', 'image', 'created_at', 'updated_at', 'package_name', 'package_version', 'package_type',
-    'remediation', 'description', 'published_date', 'modified_date', 'cvss_score', 'cvss_vector',
-    'access_vector', 'access_complexity', 'auth', 'availability_impact', 'confidentiality_impact',
-    'integrity_impact', 'cwe', 'cpe', 'references', 'docker_image_id'
-]
+class FileWriter:
+    def __init__(self, output_folder, create_folder=True, file_type='csv'):
+        self.output_folder = pathlib.Path(output_folder)
+        self.create_folder = create_folder
 
-def image_report_filepath(image):
-    tag_str = f':{image["tag"]}' if 'tag' in image else ''
-    return f'{image.get("repoName")}__{image.get("name")}{tag_str}.csv'
+    def write(self, filename, records, fieldnames=None):
+        file_path = self.output_folder / filename
+        logging.info(f'writing to: {file_path}')
+        if self.create_folder:
+            self.output_folder.mkdir(parents=True, exist_ok=True)
+        if fieldnames is None:
+            df = pd.DataFrame.from_records(records)
+        else:
+            df = pd.DataFrame.from_records(records)[fieldnames]
 
-def run_reports(target_folder):
-    images_url = f'{base_url}/images'
-    logging.info('opening images url %s', images_url)
-    response = requests.get(images_url, headers=headers)
-    images = json.loads(response.text)['items']
-    for image in images:
-        file_path = os.path.join(target_folder, image_report_filepath(image))
-        logging.info('writing to file %s', file_path)
+        df.to_csv(file_path, index=False) 
 
-        df = pd.DataFrame.from_records(parse_report(image), index='cve')
-        df[report_columns].to_csv(file_path)
+
+class ConSec:
+    def __init__(self) -> None:
+        self.tio = TenableIO()
+
+    def records(self):
+        for image in self.tio.cs.images.list():
+            repo_name, name, tag = image.get('repoName'), image.get('name'), image.get('tag')
+            report = self.tio.cs.reports.report(repo_name, name, tag)
+            for finding in report['findings']:
+                record = finding['nvdFinding']
+                record['packages'] = ','.join([f'{p.name}:{p.version}' for p in finding['packages']])
+                record['repo'] = repo_name
+                record['name'] = name
+                record['tag'] = tag
+                record['image'] = f'{repo_name}/{name}:{tag}' if tag else f'{repo_name}/{name}'
+                record['docker_image_id'] = report['docker_image_id']
+                record['created_at'] = report['created_at']
+                record['updated_at'] = report['updated_at']
+                yield record
+
+
+def main():
+
+    output_folder = './reports'
+    output_file = 'consecreport.csv'
+
+    report_columns = [
+        'image', 'repo', 'name', 'tag', 'created_at', 'updated_at', 
+        'packages', 'remediation', 'description', 
+        'published_date', 'modified_date', 'cvss_score', 'cvss_vector',
+        'access_vector', 'access_complexity', 'auth', 'availability_impact', 'confidentiality_impact',
+        'references', 'docker_image_id',
+    ]
+    
+    writer = FileWriter(output_folder)
+    writer.write(output_file, ConSec().records(), report_columns)
 
 if __name__ == '__main__':
-    run_reports('./reports/consec')
-
+    main()
